@@ -1,4 +1,4 @@
-package com.eth;
+package com.eth.wallet;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.eth", appContext.getPackageName());
+        assertEquals("com.eth.wallet", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package com.eth;
+package com.eth.wallet;
 
 import org.junit.Test;
 
