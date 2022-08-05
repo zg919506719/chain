@@ -5,3 +5,11 @@
 - thanks [alpha wallet](https://github.com/AlphaWallet/alpha-wallet-android)
 
 - [dependence](https://github.com/stars/zg919506719/lists/wallet)
+
+
+### learn
+- [mqtt](https://github.com/eclipse/paho.mqtt.android)
+
+- [room 多对多的关系]{https://developer.android.google.cn/training/data-storage/room/relationships}
+- [room 版本迁移]{https://developer.android.google.cn/training/data-storage/room/migrating-db-versions}
+- [room view]{https://developer.android.google.cn/codelabs/android-room-with-a-view}
