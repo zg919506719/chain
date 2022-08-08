@@ -5,6 +5,7 @@ import android.security.identity.PersonalizationData;
 import android.view.View;
 import android.widget.Toast;
 
+import com.eth.wallet.database.viewModel.PersonViewModel;
 import com.eth.wallet.databinding.ActivityMainBinding;
 import com.eth.wallet.database.AppDatabase;
 import com.eth.wallet.database.bean.Person;
@@ -14,6 +15,9 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.room.Room;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,7 +28,7 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PersonDao personDao;
+    private PersonViewModel personViewModel ;
 
     private final CompositeDisposable mDisposable = new CompositeDisposable();
 
@@ -35,12 +39,17 @@ public class MainActivity extends AppCompatActivity {
         ActivityMainBinding mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainBinding.setOnClick(new ClickAction());
 
-        AppDatabase appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "wallet-data").build();
+        final MainAdapter adapter = new MainAdapter(new MainAdapter.PeopleDiff());
+        mainBinding.listview.setAdapter(adapter);
+        mainBinding.listview.setLayoutManager(new LinearLayoutManager(this));
 
-        personDao = appDatabase.personDao();
-
-
-
+        personViewModel = new ViewModelProvider(this).get(PersonViewModel.class);
+        personViewModel.getAllPeople().observe(this, new Observer<List<Person>>() {
+            @Override
+            public void onChanged(List<Person> people) {
+                adapter.submitList(people);
+            }
+        });
     }
 
     @Override
@@ -53,31 +62,14 @@ public class MainActivity extends AppCompatActivity {
         public void add(View view) {
             Person person = new Person();
             person.setAge("asd");
-            mDisposable.add(personDao.insertAll(person).andThen(personDao.getAll())
-                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<Person>>() {
-                        @Override
-                        public void accept(List<Person> people) throws Exception {
-                            for (Person person :
-                                    people) {
-                                Timber.d(person.toString());
-                            }
-
-                            Toast.makeText(MainActivity.this,people.toString(),Toast.LENGTH_SHORT).show();
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            Timber.e(throwable);
-                            Toast.makeText(MainActivity.this,throwable.toString(),Toast.LENGTH_SHORT).show();
-
-                        }
-                    }));
+            Timber.v(person.hashCode()+"");
+            person.setName(person.hashCode()+"");
+            personViewModel.insertPerson(person);
         }
 
 
         public void show(View view) {
-
+            Toast.makeText(MainActivity.this, "+"+personViewModel.getAllPeople().getValue().size(), Toast.LENGTH_SHORT).show();
         }
 
 

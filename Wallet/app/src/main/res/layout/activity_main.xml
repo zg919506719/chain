@@ -30,18 +30,9 @@
             android:textSize="22sp"
             android:onClick="@{onClick.show}" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/backgroundJobStartStop"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:scaleType="center"
-            app:fabSize="normal"
-            app:srcCompat="@drawable/ic_stop_black_24dp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </layout>

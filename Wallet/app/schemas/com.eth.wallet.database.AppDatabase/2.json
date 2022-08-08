@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "e4a00e7d0c18ed929a92690334d48c21",
+    "identityHash": "9a9b14ef3f6d5fc6667f739d78c6b7e2",
     "entities": [
       {
-        "tableName": "Person",
+        "tableName": "person_table",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `age` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -40,7 +40,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e4a00e7d0c18ed929a92690334d48c21')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9a9b14ef3f6d5fc6667f739d78c6b7e2')"
     ]
   }
 }
