@@ -32,8 +32,18 @@ android {
 }
 
 dependencies {
-    api 'androidx.appcompat:appcompat:1.3.1' //Do not update; next version is incompatible with API30 and below
-    api 'com.google.android.material:material:1.5.0'
+    api 'androidx.appcompat:appcompat:1.4.2' //Do not update; next version is incompatible with API30 and below
+    api 'com.google.android.material:material:1.6.1'
     api 'com.google.code.gson:gson:2.9.0'
 
+    api 'com.github.KunMinX:UnPeek-LiveData:v7.6.0'
+    api 'com.github.KunMinX.Strict-DataBinding:strict_databinding:5.3.0'
+    api('com.github.KunMinX:MVI-Dispatcher:v6.0.0-beta') {
+        exclude group: 'com.kunminx.arch', module: 'unpeek-livedata'
+    }
+
+    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    api "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    api "com.squareup.okhttp3:okhttp:$okHttpVersion"
 }

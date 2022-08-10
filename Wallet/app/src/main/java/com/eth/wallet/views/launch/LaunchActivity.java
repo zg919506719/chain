@@ -1,18 +1,19 @@
 package com.eth.wallet.views.launch;
 
-import com.eth.base.BaseMVVMActivity;
+import com.eth.base.BaseActivity;
 import com.eth.wallet.R;
 import com.eth.wallet.databinding.ActivityLaunchBinding;
+import com.kunminx.architecture.ui.page.DataBindingConfig;
 
-public class LaunchActivity extends BaseMVVMActivity<LaunchViewModel, ActivityLaunchBinding> {
+public class LaunchActivity extends BaseActivity{
 
     @Override
-    protected Class<LaunchViewModel> getModelClass() {
-        return LaunchViewModel.class;
+    protected void initViewModel() {
+
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_launch;
+    protected DataBindingConfig getDataBindingConfig() {
+        return null;
     }
 }
