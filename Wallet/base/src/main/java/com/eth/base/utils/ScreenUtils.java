@@ -1,156 +1,283 @@
 package com.eth.base.utils;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Rect;
+import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
+import android.view.Surface;
+import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
-import java.lang.reflect.Field;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
+import androidx.appcompat.app.AppCompatActivity;
+
+import static android.Manifest.permission.WRITE_SETTINGS;
 
 /**
- * ScreenUtils
- * <ul>
- * <strong>Convert between dp and sp</strong>
- * <li>{@link ScreenUtils#dpToPx(Context, float)}</li>
- * <li>{@link ScreenUtils#pxToDp(Context, float)}</li>
- * </ul>
- *
- * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2014-2-14
+ * <pre>
+ *     author: Blankj
+ *     blog  : http://blankj.com
+ *     time  : 2016/08/02
+ *     desc  : utils about screen
+ * </pre>
  */
-public class ScreenUtils {
+public final class ScreenUtils {
 
-    public static float dpToPx(Context context, float dp) {
-        if (context == null) {
-            return -1;
-        }
-        return dp * context.getResources().getDisplayMetrics().density;
-    }
-
-    public static float pxToDp(Context context, float px) {
-        if (context == null) {
-            return -1;
-        }
-        return px / context.getResources().getDisplayMetrics().density;
-    }
-
-    public static float dpToPxInt(Context context, float dp) {
-        return (int) (dpToPx(context, dp) + 0.5f);
-    }
-
-    public static float pxToDpCeilInt(Context context, float px) {
-        return (int) (pxToDp(context, px) + 0.5f);
-    }
-
-
-    public static float getIntToDip(Context context, float dp) {
-        if (context == null) {
-            return 0.00f;
-        }
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+    private ScreenUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
     /**
-     * 获取状态栏高度
+     * Return the width of screen, in pixel.
      *
-     * @return
-     * @author :Atar
-     * @createTime:2014-7-10下午1:00:18
-     * @version:1.0.0
-     * @modifyTime:
-     * @modifyAuthor:
-     * @description:
+     * @return the width of screen, in pixel
      */
-    protected int getStatusHight(Activity mActivity) {
-        Rect frame = new Rect();
-        mActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int statusBarHeight = frame.top;
-        return statusBarHeight;
+    public static int getScreenWidth() {
+        WindowManager wm = (WindowManager) Utils.getApp().getSystemService(Context.WINDOW_SERVICE);
+        Point point = new Point();
+        wm.getDefaultDisplay().getRealSize(point);
+        return point.x;
     }
 
     /**
-     * 得到状态栏高度
+     * Return the height of screen, in pixel.
      *
-     * @return
+     * @return the height of screen, in pixel
      */
-    public static int getStatusBarHeight(Activity act) {
-        /*
-         * 方法一，荣耀3c无效 Rect frame = new Rect(); act.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame); int statusBarHeight = frame.top; return statusBarHeight;
-         */
+    public static int getScreenHeight() {
+        WindowManager wm = (WindowManager) Utils.getApp().getSystemService(Context.WINDOW_SERVICE);
+        Point point = new Point();
+        wm.getDefaultDisplay().getRealSize(point);
+        return point.y;
+    }
 
-        /*
-         * 方法二，荣耀3c无效 Rect rectgle= new Rect(); Window window= act.getWindow(); window.getDecorView().getWindowVisibleDisplayFrame(rectgle); int StatusBarHeight= rectgle.top; int contentViewTop=
-         * window.findViewById(Window.ID_ANDROID_CONTENT).getTop(); int statusBar = contentViewTop - StatusBarHeight; return statusBar;
-         */
-        // 方法三，荣耀3c有效
-        Class<?> c = null;
-        Object obj = null;
-        Field field = null;
-        int x = 0, sbar = 0;
+    /**
+     * Return the density of screen.
+     *
+     * @return the density of screen
+     */
+    public static float getScreenDensity() {
+        return Resources.getSystem().getDisplayMetrics().density;
+    }
+
+    /**
+     * Return the screen density expressed as dots-per-inch.
+     *
+     * @return the screen density expressed as dots-per-inch
+     */
+    public static int getScreenDensityDpi() {
+        return Resources.getSystem().getDisplayMetrics().densityDpi;
+    }
+
+    /**
+     * Set full screen.
+     *
+     * @param activity The activity.
+     */
+    public static void setFullScreen(@NonNull final AppCompatActivity activity) {
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    /**
+     * Set non full screen.
+     *
+     * @param activity The activity.
+     */
+    public static void setNonFullScreen(@NonNull final AppCompatActivity activity) {
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    /**
+     * Toggle full screen.
+     *
+     * @param activity The activity.
+     */
+    public static void toggleFullScreen(@NonNull final AppCompatActivity activity) {
+        int fullScreenFlag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        Window window = activity.getWindow();
+        if ((window.getAttributes().flags & fullScreenFlag) == fullScreenFlag) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+    }
+
+    /**
+     * Return whether screen is full.
+     *
+     * @param activity The activity.
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isFullScreen(@NonNull final AppCompatActivity activity) {
+        int fullScreenFlag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        return (activity.getWindow().getAttributes().flags & fullScreenFlag) == fullScreenFlag;
+    }
+
+    /**
+     * Return whether screen is landscape.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isLandscape() {
+        return Utils.getApp().getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    /**
+     * Set the screen to landscape.
+     *
+     * @param activity The activity.
+     */
+    public static void setLandscape(@NonNull final AppCompatActivity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    /**
+     * Return whether screen is portrait.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isPortrait() {
+        return Utils.getApp().getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    /**
+     * Set the screen to portrait.
+     *
+     * @param activity The activity.
+     */
+    public static void setPortrait(@NonNull final AppCompatActivity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    /**
+     * Return the rotation of screen.
+     *
+     * @param activity The activity.
+     * @return the rotation of screen
+     */
+    @SuppressLint("SwitchIntDef")
+    public static int getScreenRotation(@NonNull final AppCompatActivity activity) {
+        switch (activity.getWindowManager().getDefaultDisplay().getRotation()) {
+            case Surface.ROTATION_90:
+                return 90;
+            case Surface.ROTATION_180:
+                return 180;
+            case Surface.ROTATION_270:
+                return 270;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Return the bitmap of screen.
+     *
+     * @param activity The activity.
+     * @return the bitmap of screen
+     */
+    public static Bitmap screenShot(@NonNull final AppCompatActivity activity) {
+        return screenShot(activity, false);
+    }
+
+    /**
+     * Return the bitmap of screen.
+     *
+     * @param activity          The activity.
+     * @param isDeleteStatusBar True to delete status bar, false otherwise.
+     * @return the bitmap of screen
+     */
+    public static Bitmap screenShot(@NonNull final AppCompatActivity activity, boolean isDeleteStatusBar) {
+        View decorView = activity.getWindow().getDecorView();
+        decorView.setDrawingCacheEnabled(true);
+        decorView.setWillNotCacheDrawing(false);
+        Bitmap bmp = decorView.getDrawingCache();
+        if (bmp == null) {
+            return null;
+        }
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        Bitmap ret;
+        if (isDeleteStatusBar) {
+            Resources resources = activity.getResources();
+            int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+            int statusBarHeight = resources.getDimensionPixelSize(resourceId);
+            ret = Bitmap.createBitmap(
+                    bmp,
+                    0,
+                    statusBarHeight,
+                    dm.widthPixels,
+                    dm.heightPixels - statusBarHeight
+            );
+        } else {
+            ret = Bitmap.createBitmap(bmp, 0, 0, dm.widthPixels, dm.heightPixels);
+        }
+        decorView.destroyDrawingCache();
+        return ret;
+    }
+
+    /**
+     * Return whether screen is locked.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isScreenLock() {
+        KeyguardManager km =
+                (KeyguardManager) Utils.getApp().getSystemService(Context.KEYGUARD_SERVICE);
+        return km.inKeyguardRestrictedInputMode();
+    }
+
+    /**
+     * Return the duration of sleep.
+     *
+     * @return the duration of sleep.
+     */
+    public static int getSleepDuration() {
         try {
-            c = Class.forName("com.android.internal.R$dimen");
-            obj = c.newInstance();
-            field = c.getField("status_bar_height");
-            x = Integer.parseInt(field.get(obj).toString());
-            sbar = act.getResources().getDimensionPixelSize(x);
-            return sbar;
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        return 0;
-    }
-
-    /**
-     * 获得屏幕宽度
-     *
-     * @param context
-     * @return
-     */
-    public static int getScreenWidth(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.widthPixels;
-    }
-
-    /**
-     * 获得屏幕高度
-     *
-     * @param context
-     * @return
-     */
-    public static int getScreenHeight(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.heightPixels;
-    }
-
-    public static int dp2px(Context mContext, float dipValue) {
-        try {
-            final float scale = mContext.getResources().getDisplayMetrics().density;
-            return (int) (dipValue * scale + 0.5f);
-        } catch (Exception e) {
-            return 0;
+            return Settings.System.getInt(
+                    Utils.getApp().getContentResolver(),
+                    Settings.System.SCREEN_OFF_TIMEOUT
+            );
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            return -123;
         }
     }
 
-    //获取底部导航栏高度
-    public static int getNavigationBarHeight(Activity mActivity) {
-
-        Resources resources = mActivity.getResources();
-
-        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-
-        int height = resources.getDimensionPixelSize(resourceId);
-
-
-        return height;
-
+    /**
+     * Set the duration of sleep.
+     * <p>Must hold {@code <uses-permission android:name="android.permission.WRITE_SETTINGS" />}</p>
+     *
+     * @param duration The duration.
+     */
+    @RequiresPermission(WRITE_SETTINGS)
+    public static void setSleepDuration(final int duration) {
+        Settings.System.putInt(
+                Utils.getApp().getContentResolver(),
+                Settings.System.SCREEN_OFF_TIMEOUT,
+                duration
+        );
     }
 
+    /**
+     * Return whether device is tablet.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isTablet() {
+        return (Utils.getApp().getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
 }

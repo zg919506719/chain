@@ -1,7 +1,9 @@
 package com.eth.base;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import com.eth.base.utils.BarUtils;
 import com.eth.base.viewmodel.BaseApplication;
 import com.eth.base.viewmodel.SharedViewModel;
 import com.google.gson.Gson;
@@ -25,7 +27,12 @@ public abstract class BaseMVVMActivity<VM extends BaseViewModel, DB extends View
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        BarUtils.setStatusBarColor(this, Color.TRANSPARENT);
+        BarUtils.setStatusBarLightMode(this,true);
+
         super.onCreate(savedInstanceState);
+
+
         binding = DataBindingUtil.setContentView(this, getLayoutId());
         binding.setLifecycleOwner(this);
         initViewModel();
