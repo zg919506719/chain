@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/launch_nav"
+    app:startDestination="@id/launchFragment">
+
+
+    <fragment
+        android:id="@+id/launchFragment"
+        android:name="com.eth.wallet.views.launch.LaunchFragment"
+        android:label="LaunchFragment" >
+
+        <action
+            android:id="@+id/action_launchFragment_to_importFragment"
+            app:destination="@id/importFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/importFragment"
+        android:name="com.eth.wallet.views.import_in.ImportFragment"
+        android:label="ImportFragment" />
+</navigation>

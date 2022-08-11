@@ -5,9 +5,24 @@ import com.eth.wallet.repository.DataRepository;
 import com.kunminx.architecture.domain.message.MutableResult;
 import com.kunminx.architecture.domain.message.Result;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
 
 
 /**
@@ -43,18 +58,21 @@ public class EthRequest extends ViewModel implements DefaultLifecycleObserver {
     //TODO tip 3：👆👆👆 让 accountRequest 可观察页面生命周期，
     // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
     // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期问题。
-    private final MutableResult<DataResult<String>> addressResult=new MutableResult<>();
+    private final MutableResult<DataResult<String>> addressResult = new MutableResult<>();
 
     //TODO tip 4：MutableResult 应仅限 "唯一可信源" 内部使用，且只暴露 immutable Result 给 UI 层，
     //如此达成 "唯一可信源" 设计，也即通过 "访问控制权限" 实现 "读写分离"，
 
     //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
     //https://xiaozhuanlan.com/topic/6017825943
-    public Result<DataResult<String>> getAddressResult(){
+    public Result<DataResult<String>> getAddressResult() {
         return addressResult;
     }
 
-    public void create(){
+
+    private boolean isResume;
+
+    public void create() {
         //TODO tip 5：为方便语义理解，此处直接将 DataResult 作为 LiveData value 回推给 UI 层，
         //而非 DataResult 泛型实体拆下来单独回推，如此
         //一方面使 UI 层有机会基于 DataResult 的 responseStatus 分别处理 "请求成功或失败" 情况下 UI 表现，
@@ -72,6 +90,39 @@ public class EthRequest extends ViewModel implements DefaultLifecycleObserver {
         DataRepository.getInstance().createChain("", addressResult::postValue);
     }
 
-    public void cancelCreate(){
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    public void cancelCreate() {
+        final Disposable subscribe = Observable.create(new ObservableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+
+                    }
+                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+
+                    }
+
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
+        compositeDisposable.add(subscribe);
+    }
+
+
+    @Override
+    public void onResume(@NonNull LifecycleOwner owner) {
+        isResume = true;
+    }
+
+    @Override
+    public void onStop(@NonNull LifecycleOwner owner) {
+        isResume = false;
+        compositeDisposable.clear();
     }
 }

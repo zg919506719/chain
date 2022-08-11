@@ -46,4 +46,17 @@ dependencies {
     api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     api "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     api "com.squareup.okhttp3:okhttp:$okHttpVersion"
+
+    api 'com.github.KunMinX.KeyValueX:keyvalue:2.2.4-beta'
+
+    implementation 'com.github.KunMinX.Strict-DataBinding:binding_recyclerview:5.3.0'
+
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    api 'io.reactivex.rxjava2:rxjava:2.2.21'
+
+    api "com.github.bumptech.glide:glide:4.13.2"
+
+    api "androidx.navigation:navigation-runtime:$navigationVersion"
+    api 'com.github.KunMinX:Smooth-Navigation:v4.0.0'
+
 }

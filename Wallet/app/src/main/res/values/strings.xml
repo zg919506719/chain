@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Wallet</string>
+    <string name="network_state_retry">网络状态不佳，请重试</string>
+
 </resources>

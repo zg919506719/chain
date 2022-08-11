@@ -1,10 +1,18 @@
 package com.eth.wallet.views.create;
 
+import android.text.TextUtils;
+
 import com.eth.base.BaseActivity;
+import com.eth.base.data_response.DataResult;
+import com.eth.base.utils.SPUtils;
+import com.eth.base.utils.ToastUtils;
 import com.eth.wallet.BR;
 import com.eth.wallet.R;
+import com.eth.wallet.config.Configs;
 import com.eth.wallet.message.PageMessenger;
 import com.eth.wallet.message.event.Messages;
+import com.eth.wallet.request.EthRequest;
+import com.kunminx.architecture.data.config.keyvalue.KeyValueString;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 
 import androidx.lifecycle.Observer;
@@ -13,11 +21,13 @@ import static com.eth.wallet.message.event.Messages.EVENT_CLOSE_ACTIVITY_IF_ALLO
 
 public class CreateActivity extends BaseActivity {
     private CreateViewModel mStates;
+    private EthRequest ethRequest;
     private PageMessenger mMessenger;
 
     @Override
     protected void initViewModel() {
         mStates = getActivityScopeViewModel(CreateViewModel.class);
+        ethRequest = getActivityScopeViewModel(EthRequest.class);
         mMessenger = getApplicationScopeViewModel(PageMessenger.class);
 
         //TODO tip 8: 此处演示使用 "唯一可信源" MVI-Dispatcher input-output 接口完成消息收发
@@ -30,6 +40,27 @@ public class CreateActivity extends BaseActivity {
                     case EVENT_CLOSE_ACTIVITY_IF_ALLOWED:
                         break;
                 }
+            }
+        });
+
+        initReq();
+    }
+
+    private void initReq() {
+        ethRequest.getAddressResult().observe(this, new Observer<DataResult<String>>() {
+            @Override
+            public void onChanged(DataResult<String> dataResult) {
+                if (!dataResult.getResponseStatus().isSuccess()) {
+                    mStates.loadingVisible.set(false);
+                    ToastUtils.showLongToast(getApplicationContext(), getString(R.string.network_state_retry));
+                    return;
+                }
+
+                String s = dataResult.getResult();
+
+                if (TextUtils.isEmpty(s)) return;
+                SPUtils.getInstance().put(Configs.TOKEN, s);
+
             }
         });
     }

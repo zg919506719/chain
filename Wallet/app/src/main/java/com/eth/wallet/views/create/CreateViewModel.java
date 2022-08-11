@@ -11,7 +11,7 @@ public class CreateViewModel extends BaseViewModel {
     //TODO tip 5：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
 
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
-    public final State<Boolean> isLoading=new State<>(false);
+    public final State<Boolean> loadingVisible=new State<>(false);
 
     public final State<String> name=new State<>("");
 }
