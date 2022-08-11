@@ -5,20 +5,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:onClick="@{click.transfer}"/>
         <fragment
             android:id="@+id/launch_nav"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="match_parent"
             app:defaultNavHost="true"
             app:navGraph="@navigation/launch_frag_nav" />
-        
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/test_tv"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:text="Click"
-            android:onClick="@{click.transfer}"/>
 
 
     </LinearLayout>

@@ -12,6 +12,7 @@ import com.eth.base.utils.AdaptScreenUtils;
 import com.eth.base.utils.BarUtils;
 import com.eth.base.utils.ScreenUtils;
 import com.eth.base.data_response.manager.NetworkStateManager;
+import com.eth.base.widgets.AWalletAlertDialog;
 import com.kunminx.architecture.ui.page.DataBindingActivity;
 import com.kunminx.architecture.ui.scope.ViewModelScope;
 
@@ -21,12 +22,12 @@ import androidx.lifecycle.ViewModel;
 
 public abstract class BaseActivity extends DataBindingActivity {
 
-    private final ViewModelScope mViewModelScope=new ViewModelScope();
+    private final ViewModelScope mViewModelScope = new ViewModelScope();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         BarUtils.setStatusBarColor(this, Color.TRANSPARENT);
-        BarUtils.setStatusBarLightMode(this,true);
+        BarUtils.setStatusBarLightMode(this, true);
 
         super.onCreate(savedInstanceState);
 
@@ -47,8 +48,8 @@ public abstract class BaseActivity extends DataBindingActivity {
 
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6257931840
 
-    public <T extends ViewModel> T getActivityScopeViewModel(@NonNull Class<T> modelClass){
-        return mViewModelScope.getActivityScopeViewModel(this,modelClass);
+    public <T extends ViewModel> T getActivityScopeViewModel(@NonNull Class<T> modelClass) {
+        return mViewModelScope.getActivityScopeViewModel(this, modelClass);
     }
 
     public <T extends ViewModel> T getApplicationScopeViewModel(@NonNull Class<T> modelClass) {
@@ -74,5 +75,17 @@ public abstract class BaseActivity extends DataBindingActivity {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
+    }
+
+    private AWalletAlertDialog dialog;
+
+    public void showLoading() {
+        if (dialog != null && dialog.isShowing()) dialog.dismiss();
+        dialog = new AWalletAlertDialog(this);
+        dialog.setTitle("");
+        dialog.setIcon(AWalletAlertDialog.NONE);
+        dialog.setProgressMode();
+        dialog.setCancelable(false);
+        dialog.show();
     }
 }

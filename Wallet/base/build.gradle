@@ -59,4 +59,5 @@ dependencies {
     api "androidx.navigation:navigation-runtime:$navigationVersion"
     api 'com.github.KunMinX:Smooth-Navigation:v4.0.0'
 
+    api 'com.kunminx.linkage:linkage-recyclerview:2.7.0'
 }

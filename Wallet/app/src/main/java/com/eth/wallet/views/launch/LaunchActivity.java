@@ -32,7 +32,7 @@ public class LaunchActivity extends BaseActivity {
         final Bundle bundle = new Bundle();
         bundle.putString("test","123");
         Navigation.findNavController(this, R.id.launch_nav).navigate(R.id.action_launchFragment_to_importFragment);
-
+        showLoading();
 //        Navigation.findNavController(this, R.id.launch_nav).navigateUp();
     }
 
