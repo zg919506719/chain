@@ -20,7 +20,7 @@ public interface UserDao {
 
 // 是否存在   select 1 from user where id = xxx limit 1；
 // ||相当于+号 '%' || :searchName || '%'
-    @Query("SELECT COUNT(*) FROM User WHERE userName like :name || '_' ")
+    @Query("SELECT COUNT(*) FROM User WHERE userName LIKE :name")
     int userExistCount(String name);
 
     @Insert
