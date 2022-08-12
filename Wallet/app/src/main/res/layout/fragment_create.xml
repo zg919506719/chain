@@ -7,7 +7,7 @@
 
         <variable
             name="click"
-            type="com.eth.wallet.views.create.CreateActivity.ClickProxy" />
+            type="com.eth.wallet.views.create.CreateFragment" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

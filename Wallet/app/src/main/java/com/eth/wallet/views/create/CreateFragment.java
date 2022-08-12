@@ -12,14 +12,13 @@ import com.eth.wallet.config.Configs;
 import com.eth.wallet.message.PageMessenger;
 import com.eth.wallet.message.event.Messages;
 import com.eth.wallet.request.EthRequest;
-import com.kunminx.architecture.data.config.keyvalue.KeyValueString;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 
 import androidx.lifecycle.Observer;
 
 import static com.eth.wallet.message.event.Messages.EVENT_CLOSE_ACTIVITY_IF_ALLOWED;
 
-public class CreateActivity extends BaseActivity {
+public class CreateFragment extends BaseActivity {
     private CreateViewModel mStates;
     private EthRequest ethRequest;
     private PageMessenger mMessenger;
@@ -75,7 +74,7 @@ public class CreateActivity extends BaseActivity {
 
         // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.activity_create, BR.vm, mStates)
+        return new DataBindingConfig(R.layout.fragment_create, BR.vm, mStates)
                 .addBindingParam(BR.click, new ClickProxy());
     }
 
