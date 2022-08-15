@@ -65,5 +65,5 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
     // optional - Paging 3 Integration
 //    implementation "androidx.room:room-paging:2.5.0-alpha02"
-
+    implementation 'com.kunminx.linkage:linkage-recyclerview:2.7.0'
 }

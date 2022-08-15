@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/t/.gradle/caches/transforms-3/4b81785b79baf7fec95b2490036d2860/transformed/jetified-linkage-recyclerview-2.7.0/res/layout/default_adapter_linkage_secondary_linear.xml" value="0.3171875" />
         <entry key="..\:/Users/t/chain/Wallet/app/src/main/res/drawable/background_bottom_sheet.xml" value="0.2315" />
         <entry key="..\:/Users/t/chain/Wallet/app/src/main/res/drawable/ic_play_arrow_black_24dp.xml" value="0.22592592592592592" />
         <entry key="..\:/Users/t/chain/Wallet/app/src/main/res/layout/activity_create.xml" value="0.24166666666666667" />
@@ -11,7 +12,7 @@
         <entry key="..\:/Users/t/chain/Wallet/app/src/main/res/layout/dialog_awallet_alert.xml" value="0.225" />
         <entry key="..\:/Users/t/chain/Wallet/app/src/main/res/layout/fragment_import.xml" value="0.13768115942028986" />
         <entry key="..\:/Users/t/chain/Wallet/app/src/main/res/layout/fragment_import_success.xml" value="0.3072916666666667" />
-        <entry key="..\:/Users/t/chain/Wallet/app/src/main/res/layout/fragment_launch.xml" value="0.2296875" />
+        <entry key="..\:/Users/t/chain/Wallet/app/src/main/res/layout/fragment_launch.xml" value="0.1" />
         <entry key="..\:/Users/t/chain/Wallet/app/src/main/res/layout/recycleview_item.xml" value="0.35520833333333335" />
         <entry key="..\:/Users/t/chain/Wallet/base/src/main/res/drawable/background_bottom_sheet.xml" value="0.2035" />
         <entry key="..\:/Users/t/chain/Wallet/base/src/main/res/drawable/background_chart_tab_selected.xml" value="0.2035" />

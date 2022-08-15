@@ -4,13 +4,22 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:gravity="center">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{vm.userName}"
-            android:onClick="@{click::transfer}"/>
+
+        <com.kunminx.linkage.LinkageRecyclerView
+            android:id="@+id/linkage_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            recycle_data="@{vm.linkData}"/>
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:onClick="@{click::transfer}"-->
+<!--            android:text="@{vm.userName}" />-->
+
     </LinearLayout>
 
     <data>
