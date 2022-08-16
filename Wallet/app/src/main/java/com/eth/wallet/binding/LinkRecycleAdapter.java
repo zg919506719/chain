@@ -22,13 +22,13 @@ import java.util.List;
 import androidx.databinding.BindingAdapter;
 
 public class LinkRecycleAdapter {
-    @BindingAdapter("recycle_data")
-    public static void setAdapter(LinkageRecyclerView linkageRecyclerView, List<UserItem> defaultGroupedItems){
+    @BindingAdapter(value = {"recycle_data","click_listen"})
+    public static void setAdapter(LinkageRecyclerView linkageRecyclerView, List<UserItem> defaultGroupedItems, View.OnClickListener onClickListener){
         linkageRecyclerView.init(defaultGroupedItems);
         linkageRecyclerView.setDefaultOnItemBindListener(new DefaultLinkagePrimaryAdapterConfig.OnPrimaryItemClickListener() {
             @Override
             public void onItemClick(LinkagePrimaryViewHolder linkagePrimaryViewHolder, View view, String s) {
-                ToastUtils.showShortToast(linkageRecyclerView.getContext(),s);
+                Snackbar.make(view, s, Snackbar.LENGTH_SHORT).show();
             }
         }, new DefaultLinkagePrimaryAdapterConfig.OnPrimaryItemBindListener() {
             @Override
@@ -38,9 +38,7 @@ public class LinkRecycleAdapter {
         }, new DefaultLinkageSecondaryAdapterConfig.OnSecondaryItemBindListener() {
             @Override
             public void onBindViewHolder(LinkageSecondaryViewHolder secondaryHolder, BaseGroupedItem<DefaultGroupedItem.ItemInfo> item) {
-                secondaryHolder.getView(R.id.level_2_item).setOnClickListener(v -> {
-                    Snackbar.make(v, item.info.getTitle(), Snackbar.LENGTH_SHORT).show();
-                });
+                secondaryHolder.getView(R.id.level_2_item).setOnClickListener(onClickListener);
             }
         }, new DefaultLinkageSecondaryAdapterConfig.OnSecondaryHeaderBindListener() {
             @Override

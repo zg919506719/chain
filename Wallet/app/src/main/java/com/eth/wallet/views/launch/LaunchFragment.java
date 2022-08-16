@@ -8,15 +8,19 @@ import com.eth.base.data_response.DataResult;
 import com.eth.base.utils.ToastUtils;
 import com.eth.wallet.BR;
 import com.eth.wallet.R;
+import com.eth.wallet.request.EthRequest;
 import com.eth.wallet.request.UserRequest;
 import com.eth.wallet.request.bean.UserItem;
+import com.google.android.material.snackbar.Snackbar;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 
+import java.io.IOException;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+import timber.log.Timber;
 
 public class LaunchFragment extends BaseFragment {
     private LaunchFraViewModel mViewModel;
@@ -56,8 +60,16 @@ public class LaunchFragment extends BaseFragment {
 
     @Override
     protected DataBindingConfig getDataBindingConfig() {
+        final View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Timber.e("zzzzzzzzzzzzzzzzzzzzzz");
+                Snackbar.make(v, "test", Snackbar.LENGTH_SHORT).show();
+            }
+        };
         return new DataBindingConfig(R.layout.fragment_launch, BR.vm, mViewModel).
-                addBindingParam(BR.click, new ClickProxy());
+                addBindingParam(BR.click, new ClickProxy())
+                .addBindingParam(BR.click_listener,onClickListener);
     }
 
     public class ClickProxy {

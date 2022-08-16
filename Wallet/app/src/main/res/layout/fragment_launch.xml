@@ -12,7 +12,8 @@
             android:id="@+id/linkage_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            recycle_data="@{vm.linkData}"/>
+            recycle_data="@{vm.linkData}"
+            click_listen="@{click_listener}"/>
 
 <!--        <androidx.appcompat.widget.AppCompatTextView-->
 <!--            android:layout_width="wrap_content"-->
@@ -28,6 +29,9 @@
             name="vm"
             type="com.eth.wallet.views.launch.LaunchFraViewModel" />
 
+        <variable
+            name="click_listener"
+            type="android.view.View.OnClickListener" />
         <variable
             name="click"
             type="com.eth.wallet.views.launch.LaunchFragment.ClickProxy" />

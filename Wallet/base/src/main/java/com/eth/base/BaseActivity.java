@@ -26,7 +26,7 @@ public abstract class BaseActivity extends DataBindingActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        BarUtils.setStatusBarColor(this, Color.TRANSPARENT);
+//        BarUtils.setStatusBarColor(this, Color.TRANSPARENT);
 //        BarUtils.setStatusBarLightMode(this, true);
 
         super.onCreate(savedInstanceState);
